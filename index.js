@@ -8,20 +8,21 @@ const board_container = document.getElementById("play-area");
 
 const render_board = () => {
   board_container.innerHTML = "";
-  play_board.forEach((val, index) =>{
+  play_board.forEach((val, index) => {
       board_container.innerHTML += `<div id="block_${index}" class="block" onclick="addPlayerMove(${index})">${play_board[index]}</div>`;
     
-      if (val === "X"|| val === "O")
+      if (val === player || val === computer)
         {
           document.querySelector(`#block_${index}`).classList.add("occupied");
         }
   });
 };
 
-const addPlayerMove = function(value) {
-  if (!board_full && index === "") {
+const addPlayerMove = function(index) {
+  if (!board_full && play_board[index] === "") {
     play_board[index] = player;
-    render_board();
+
+    game_func();
     addComputerMove();
   }
 };
@@ -30,27 +31,26 @@ const addComputerMove = () => {
     if(!board_full){
         let selected;
         do{
-            let selected = Math.floor(Math.random() * 9);
+            selected = Math.floor(Math.random() * 9);
         }while(play_board[selected] != "");
         play_board[selected] = computer;
-        render_board();
+    game_func();
     }
 };
 
 const check_board_complete = function() {
-    let flag = true;
-    debugger;
-    play_board.forEach(value => {
+    let flag = false;
+    play_board.forEach(element => {
         if (element != player && element != computer) {
-            flag = false;
+            flag = true;
         }
     });
-
+    board_full = !flag;
 }
 
 const game_func = () => {
-render_board();
-check_board_complete();
+    render_board();
+    check_board_complete();
 };
 
 
